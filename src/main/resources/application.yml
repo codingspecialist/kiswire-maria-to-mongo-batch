@@ -1,0 +1,29 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /
+    
+spring:
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: factorydb
+      username: factory
+      password: factory1234
+
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://localhost:3306/factorydb?serverTimezone=Asia/Seoul
+    username: korea
+    password: korea1234
+    
+  jpa:
+    hibernate:
+      ddl-auto: none # create, update, none
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+#    show-sql: true
+#    properties:
+#      hibernate.format_sql: true
+
