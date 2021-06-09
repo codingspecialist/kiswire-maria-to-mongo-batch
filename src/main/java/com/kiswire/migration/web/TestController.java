@@ -18,6 +18,7 @@ import com.kiswire.migration.domain.maria.fda001.MariaFda001Repository;
 import com.kiswire.migration.domain.maria.fda002.MariaFda002Repository;
 import com.kiswire.migration.domain.mongo.fda001.MongoFda;
 import com.kiswire.migration.domain.mongo.fda001.MongoFdaRepository;
+import com.kiswire.migration.util.CustomPickedTime;
 import com.kiswire.migration.util.CustomTimeUtils;
 
 import lombok.RequiredArgsConstructor;
@@ -106,4 +107,11 @@ public class TestController {
 		return mariaFda001Repository.findByPlcR0001TimestampBetween(startTs, endTs, pageable);
 	}
 
+	@GetMapping("/maria/fda001/named/util/minus/{minusDay}")
+	public List<MariaFda001> pickDayNamedUtil(@PathVariable int minusDay,
+			@PageableDefault(size = 3) Pageable pageable) {
+		// 날짜 LocalDate.now().minusDays(1) 어제
+		CustomPickedTime ts = CustomPickedTime.getStartEndTs(minusDay);
+		return mariaFda001Repository.findByPlcR0001TimestampBetween(ts.getStartTs(), ts.getEndTs(), pageable);
+	}
 }
