@@ -13,4 +13,5 @@ public interface MariaFda001Repository extends JpaRepository<MariaFda001, Long>{
 	List<MariaFda001> mFindByYesterday(Timestamp startTime, Timestamp endTime);
 	
 	List<MariaFda001> findByPlcR0001TimestampBetween(Timestamp startTime, Timestamp endTime, Pageable pageable);
+	List<MariaFda001> findByPlcR0001TimestampBetween(Timestamp startTime, Timestamp endTime);
 }

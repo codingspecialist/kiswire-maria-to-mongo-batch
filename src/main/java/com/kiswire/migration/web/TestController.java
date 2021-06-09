@@ -41,7 +41,7 @@ public class TestController {
 		return mariaFda002Repository.count();
 	}
 
-	@PostMapping("/mongo/fda001")
+	@PostMapping("/mongo/fda")
 	public MongoFda saveOne() {
 		MongoFda mongoFda = MongoFda.builder().id(1L).build();
 		return mongoFdaRepository.save(mongoFda);
@@ -114,4 +114,16 @@ public class TestController {
 		CustomPickedTime ts = CustomPickedTime.getStartEndTs(minusDay);
 		return mariaFda001Repository.findByPlcR0001TimestampBetween(ts.getStartTs(), ts.getEndTs(), pageable);
 	}
+	
+@GetMapping("/maria/fda001/count/{minusDay}")
+public Integer countFda001MinusDay(@PathVariable int minusDay) {
+	CustomPickedTime cpt = CustomPickedTime.getStartEndTs(7);
+	return mariaFda001Repository.findByPlcR0001TimestampBetween(cpt.getStartTs(), cpt.getEndTs()).size();
+}
+
+@GetMapping("/maria/fda002/count/{minusDay}")
+public Integer countFda002MinusDay(@PathVariable int minusDay) {
+	CustomPickedTime cpt = CustomPickedTime.getStartEndTs(7);
+	return mariaFda002Repository.findByPlcR0001TimestampBetween(cpt.getStartTs(), cpt.getEndTs()).size();
+}
 }

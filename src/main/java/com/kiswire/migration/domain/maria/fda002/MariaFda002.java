@@ -7,16 +7,25 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Transient;
+
+import com.kiswire.migration.domain.maria.MariaFda;
 
 import lombok.Data;
 
 @Data
 @Entity(name = "fda002")
-public class MariaFda002 {
+public class MariaFda002 implements MariaFda{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id; // mediumint = Integer와 동일!! 혹시 모르니 Long으로 잡기
+	
+	@Transient
+	private String name;
+	
+	@Transient
+	private String group;
 	
 	//@ColumnDefault("null") - insert할 것이 아니라 select만 할 것이기 때문에 맞출 필요 없음.
 	@Column(length = 20, name = "FDA002_PLC_R0001")
@@ -53,7 +62,7 @@ public class MariaFda002 {
 	private String r0042;
 	
 	@Column(length = 20, name = "FDA002_R0043")
-	private String fda0021R0043;
+	private String r0043;
 	
 	@Column(length = 20, name = "FDA002_R0044")
 	private String r0044;
