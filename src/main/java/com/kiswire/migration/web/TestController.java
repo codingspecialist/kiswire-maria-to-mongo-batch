@@ -1,9 +1,15 @@
 package com.kiswire.migration.web;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.List;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -71,4 +77,33 @@ public class TestController {
 		MongoFda mongoFda001 = MongoFda.builder().id(ma.getId()).plcR0001Timestamp(ma.getPlcR0001Timestamp()).build();
 		return mongoFdaRepository.save(mongoFda001);
 	}
+
+	@GetMapping("/maria/fda001/minus/{minusDay}")
+	public List<MariaFda001> pickDay(@PathVariable int minusDay) {
+		// 날짜 LocalDate.now().minusDays(1) 어제
+		LocalDateTime startTime = LocalDateTime.of(LocalDate.now().minusDays(minusDay), LocalTime.of(0, 0, 0));
+		LocalDateTime endTime = LocalDateTime.of(LocalDate.now().minusDays(minusDay), LocalTime.of(23, 59, 59));
+
+		Timestamp startTs = Timestamp.valueOf(startTime);
+		Timestamp endTs = Timestamp.valueOf(endTime);
+
+		System.out.println("startTime : " + startTime);
+		System.out.println("endTime : " + endTime);
+
+		System.out.println("startTs : " + startTs);
+		System.out.println("endTs : " + endTs);
+
+		return mariaFda001Repository.mFindByYesterday(startTs, endTs);
+	}
+
+	@GetMapping("/maria/fda001/named/minus/{minusDay}")
+	public List<MariaFda001> pickDayNamed(@PathVariable int minusDay, @PageableDefault(size = 3) Pageable pageable) {
+		// 날짜 LocalDate.now().minusDays(1) 어제
+		LocalDateTime startTime = LocalDateTime.of(LocalDate.now().minusDays(minusDay), LocalTime.of(0, 0, 0));
+		LocalDateTime endTime = LocalDateTime.of(LocalDate.now().minusDays(minusDay), LocalTime.of(23, 59, 59));
+		Timestamp startTs = Timestamp.valueOf(startTime);
+		Timestamp endTs = Timestamp.valueOf(endTime);
+		return mariaFda001Repository.findByPlcR0001TimestampBetween(startTs, endTs, pageable);
+	}
+
 }
