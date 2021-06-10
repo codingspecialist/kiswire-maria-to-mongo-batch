@@ -13,8 +13,8 @@ import com.kiswire.migration.domain.maria.fda001.MariaFda001;
 import com.kiswire.migration.domain.maria.fda001.MariaFda001Repository;
 import com.kiswire.migration.domain.maria.fda002.MariaFda002;
 import com.kiswire.migration.domain.maria.fda002.MariaFda002Repository;
-import com.kiswire.migration.domain.mongo.fda001.MongoFda;
-import com.kiswire.migration.domain.mongo.fda001.MongoFdaRepository;
+import com.kiswire.migration.domain.mongo.MongoFda;
+import com.kiswire.migration.domain.mongo.MongoFdaRepository;
 import com.kiswire.migration.handler.CustomException;
 import com.kiswire.migration.util.CustomConvert;
 import com.kiswire.migration.util.CustomPickedTime;
@@ -37,9 +37,9 @@ public class MoveMariaToMongoBatch {
 		System.out.println("mariaToMongoStartTest 실행");
 		// 1. Maria 7일전 날짜 기계 데이터 가져오기
 		CustomPickedTime cpt = CustomPickedTime.getStartEndTs(7);
-		List<MariaFda001> mariaFs1 = f1Repo.findByPlcR0001TimestampBetween(cpt.getStartTs(), cpt.getEndTs(),
+		List<MariaFda> mariaFs1 = f1Repo.findByPlcR0001TimestampBetween(cpt.getStartTs(), cpt.getEndTs(),
 				PageRequest.of(1, 3));
-		List<MariaFda002> mariaFs2 = f2Repo.findByPlcR0001TimestampBetween(cpt.getStartTs(), cpt.getEndTs(),
+		List<MariaFda> mariaFs2 = f2Repo.findByPlcR0001TimestampBetween(cpt.getStartTs(), cpt.getEndTs(),
 				PageRequest.of(1, 3));
 		System.out.println(mariaFs1);
 		System.out.println(mariaFs2);
@@ -57,15 +57,15 @@ public class MoveMariaToMongoBatch {
 
 	}
 
-	@Scheduled(cron = "0 55 00 * * *", zone = "Asia/Seoul")
+	@Scheduled(cron = "0 4 10 * * *", zone = "Asia/Seoul")
 	public void mariaToMongoStart() {
 
 		try {
 			System.out.println(LocalDateTime.now()+" -> mariaToMongoStart 실행 ===================================");
 			// 1. Maria 7일전 날짜 기계 데이터 가져오기
 			CustomPickedTime cpt = CustomPickedTime.getStartEndTs(7);
-			List<MariaFda001> mariaFs1 = f1Repo.findByPlcR0001TimestampBetween(cpt.getStartTs(), cpt.getEndTs());
-			List<MariaFda002> mariaFs2 = f2Repo.findByPlcR0001TimestampBetween(cpt.getStartTs(), cpt.getEndTs());
+			List<MariaFda> mariaFs1 = f1Repo.findByPlcR0001TimestampBetween(cpt.getStartTs(), cpt.getEndTs());
+			List<MariaFda> mariaFs2 = f2Repo.findByPlcR0001TimestampBetween(cpt.getStartTs(), cpt.getEndTs());
 
 			// 2. group(1,2)과 name(fda001, fda002) 추가하기
 			List<MongoFda> mf1 = CustomConvert.mariaToMongoObject(mariaFs1, "fds001", "1");

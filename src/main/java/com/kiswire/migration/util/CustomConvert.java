@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.kiswire.migration.domain.maria.MariaFda;
-import com.kiswire.migration.domain.mongo.fda001.MongoFda;
+import com.kiswire.migration.domain.mongo.MongoFda;
 
 public class CustomConvert {
 

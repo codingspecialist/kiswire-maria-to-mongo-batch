@@ -1,4 +1,4 @@
-package com.kiswire.migration.domain.mongo.fda001;
+package com.kiswire.migration.domain.mongo;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 

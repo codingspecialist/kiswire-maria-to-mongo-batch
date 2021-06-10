@@ -13,11 +13,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.kiswire.migration.domain.maria.MariaFda;
 import com.kiswire.migration.domain.maria.fda001.MariaFda001;
 import com.kiswire.migration.domain.maria.fda001.MariaFda001Repository;
 import com.kiswire.migration.domain.maria.fda002.MariaFda002Repository;
-import com.kiswire.migration.domain.mongo.fda001.MongoFda;
-import com.kiswire.migration.domain.mongo.fda001.MongoFdaRepository;
+import com.kiswire.migration.domain.mongo.MongoFda;
+import com.kiswire.migration.domain.mongo.MongoFdaRepository;
 import com.kiswire.migration.util.CustomPickedTime;
 import com.kiswire.migration.util.CustomTimeUtils;
 
@@ -98,7 +99,7 @@ public class TestController {
 	}
 
 	@GetMapping("/maria/fda001/named/minus/{minusDay}")
-	public List<MariaFda001> pickDayNamed(@PathVariable int minusDay, @PageableDefault(size = 3) Pageable pageable) {
+	public List<MariaFda> pickDayNamed(@PathVariable int minusDay, @PageableDefault(size = 3) Pageable pageable) {
 		// 날짜 LocalDate.now().minusDays(1) 어제
 		LocalDateTime startTime = LocalDateTime.of(LocalDate.now().minusDays(minusDay), LocalTime.of(0, 0, 0));
 		LocalDateTime endTime = LocalDateTime.of(LocalDate.now().minusDays(minusDay), LocalTime.of(23, 59, 59));
@@ -108,22 +109,21 @@ public class TestController {
 	}
 
 	@GetMapping("/maria/fda001/named/util/minus/{minusDay}")
-	public List<MariaFda001> pickDayNamedUtil(@PathVariable int minusDay,
-			@PageableDefault(size = 3) Pageable pageable) {
+	public List<MariaFda> pickDayNamedUtil(@PathVariable int minusDay, @PageableDefault(size = 3) Pageable pageable) {
 		// 날짜 LocalDate.now().minusDays(1) 어제
 		CustomPickedTime ts = CustomPickedTime.getStartEndTs(minusDay);
 		return mariaFda001Repository.findByPlcR0001TimestampBetween(ts.getStartTs(), ts.getEndTs(), pageable);
 	}
-	
-@GetMapping("/maria/fda001/count/{minusDay}")
-public Integer countFda001MinusDay(@PathVariable int minusDay) {
-	CustomPickedTime cpt = CustomPickedTime.getStartEndTs(7);
-	return mariaFda001Repository.findByPlcR0001TimestampBetween(cpt.getStartTs(), cpt.getEndTs()).size();
-}
 
-@GetMapping("/maria/fda002/count/{minusDay}")
-public Integer countFda002MinusDay(@PathVariable int minusDay) {
-	CustomPickedTime cpt = CustomPickedTime.getStartEndTs(7);
-	return mariaFda002Repository.findByPlcR0001TimestampBetween(cpt.getStartTs(), cpt.getEndTs()).size();
-}
+	@GetMapping("/maria/fda001/count/{minusDay}")
+	public Integer countFda001MinusDay(@PathVariable int minusDay) {
+		CustomPickedTime cpt = CustomPickedTime.getStartEndTs(7);
+		return mariaFda001Repository.findByPlcR0001TimestampBetween(cpt.getStartTs(), cpt.getEndTs()).size();
+	}
+
+	@GetMapping("/maria/fda002/count/{minusDay}")
+	public Integer countFda002MinusDay(@PathVariable int minusDay) {
+		CustomPickedTime cpt = CustomPickedTime.getStartEndTs(7);
+		return mariaFda002Repository.findByPlcR0001TimestampBetween(cpt.getStartTs(), cpt.getEndTs()).size();
+	}
 }
